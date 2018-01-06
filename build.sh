@@ -76,7 +76,7 @@ if [ -e "package.json" ]; then
 	echo "WARNING: source contains a package.json file, it will be not included in distribution."
 fi
 
-cp "$ROOT_DIR/package.json.template" | sed -r "s/___project_name___/$PROJECT_NAME/g" | sed -r "s/___project_version___/$PROJECT_VERSION/g" > package.json
+cat "$ROOT_DIR/package.json.template" | sed -r "s/___project_name___/$PROJECT_NAME/g" | sed -r "s/___project_version___/$PROJECT_VERSION/g" > package.json
 
 npm run nwjs-build
 
