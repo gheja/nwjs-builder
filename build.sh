@@ -79,3 +79,12 @@ fi
 cp "$ROOT_DIR/package.json.template" | sed -r "s/___project_name___/$PROJECT_NAME/g" | sed -r "s/___project_version___/$PROJECT_VERSION/g" > package.json
 
 npm run nwjs-build
+
+result=$?
+
+if [ $result != 0 ]; then
+	echo "ERROR: build returned status $result, exiting."
+	exit 1
+fi
+
+exit 0
