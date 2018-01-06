@@ -3,4 +3,4 @@ addons:
     packages:
     - wine
 script:
-  - ./build.sh
+  - ./build.sh src dist test-project 0.1.0
