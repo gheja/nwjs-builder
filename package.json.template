@@ -1,0 +1,14 @@
+{
+  "name": "___project_name___",
+  "main": "index.html",
+  "version": "___project_version___",
+  "devDependencies": {
+    "nwjs-builder-phoenix": "^1.14.6"
+  },
+  "build": {
+    "nwVersion": "0.14.7"
+  },
+  "scripts": {
+    "nwjs-build": "build --tasks win-x86,win-x64,linux-x86,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ ."
+  }
+}
