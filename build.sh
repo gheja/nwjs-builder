@@ -68,7 +68,9 @@ cd ..
 cd build
 
 # install node.js if not installed
-cat ../cache/node-v8.9.4-linux-x64.tar.xz | xz -d | tar -x
+if [ ! -e "node-v8.9.4-linux-x64" ]; then
+	cat ../cache/node-v8.9.4-linux-x64.tar.xz | xz -d | tar -x
+fi
 
 # install  nwjs-builder-phoenix
 npm install nwjs-builder-phoenix
