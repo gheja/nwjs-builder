@@ -52,12 +52,13 @@ fi
 
 cd "$ROOT_DIR"
 
-# creating directories
+# create directories
 mkdir -p cache
 mkdir -p build
 
 cd cache
 
+# download node.js if not downloaded already
 if [ ! -e "node-v8.9.4-linux-x64.tar.xz" ]; then
 	wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz
 fi
@@ -66,20 +67,24 @@ cd ..
 
 cd build
 
+# install node.js if not installed
 cat ../cache/node-v8.9.4-linux-x64.tar.xz | xz -d | tar -x
 
+# install  nwjs-builder-phoenix
 npm install nwjs-builder-phoenix
 
+# copy the original files here
 cp -r "$SOURCE_DIR/"* ./
 
 if [ -e "package.json" ]; then
 	echo "WARNING: source contains a package.json file, it will be not included in distribution."
 fi
 
+# create a new package.json
 cat "$ROOT_DIR/package.json.template" | sed -r "s/___project_name___/$PROJECT_NAME/g" | sed -r "s/___project_version___/$PROJECT_VERSION/g" > package.json
 
+# run the build
 npm run nwjs-build
-
 result=$?
 
 if [ $result != 0 ]; then
