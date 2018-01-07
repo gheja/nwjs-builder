@@ -95,7 +95,7 @@ if [ $result != 0 ]; then
 fi
 
 # create the zip pacckages
-cd "build/dist"
+cd dist
 
 for i in *; do
 	if [ ! -d "$i" ]; then
@@ -109,5 +109,9 @@ for i in *; do
 	
 	zip -r9 "$TARGET_DIR/$i.zip" "$i" | grep -vE '^  adding:'
 done
+
+cd "$TARGET_DIR"
+
+ls -alh
 
 exit 0
