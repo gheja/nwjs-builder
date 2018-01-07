@@ -94,4 +94,20 @@ if [ $result != 0 ]; then
 	exit 1
 fi
 
+# create the zip pacckages
+cd "build/dist"
+
+for i in *; do
+	if [ ! -d "$i" ]; then
+		continue
+	fi
+	
+	if [ -e "$TARGET_DIR/$i.zip" ]; then
+		echo "WARNING: $i.zip already exists, skipping."
+		continue
+	fi
+	
+	zip -r9 "$TARGET_DIR/$i.zip" "$i" | grep -vE '^  adding:'
+done
+
 exit 0
