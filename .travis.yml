@@ -2,5 +2,6 @@ addons:
   apt:
     packages:
     - wine
+    - zip
 script:
   - ./build.sh src dist test-project 0.1.0
