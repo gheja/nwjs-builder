@@ -13,6 +13,28 @@ _usage_and_exit()
 	exit 1
 }
 
+section_start()
+{
+	local section="$1"
+	local message="$2"
+	
+	if [ "$TRAVIS" == "true" ]; then
+		echo -en "travis_fold:start:${section}\\r"
+	fi
+	
+	echo -e "\\e[1;33m${message}\\e[0;39m"
+}
+
+section_end()
+{
+	local section="$1"
+	
+	if [ "$TRAVIS" == "true" ]; then
+		echo -en "travis_fold:end:${section}\\r"
+	fi
+}
+
+
 if [ $# -lt 2 ] || [ $# -gt 4 ]; then
 	_usage_and_exit
 fi
@@ -49,6 +71,7 @@ fi
 
 
 ### preparing
+section_start "nwjs_prepare" "Preparing..."
 
 cd "$ROOT_DIR"
 
@@ -85,6 +108,10 @@ fi
 # create a new package.json
 cat "$ROOT_DIR/package.json.template" | sed -r "s/___project_name___/$PROJECT_NAME/g" | sed -r "s/___project_version___/$PROJECT_VERSION/g" > package.json
 
+section_end "nwjs_prepare"
+
+section_start "nwjs_build" "Building..."
+
 # run the build
 npm run nwjs-build
 result=$?
@@ -109,6 +136,8 @@ for i in *; do
 	
 	zip -r9 "$TARGET_DIR/$i.zip" "$i" | grep -vE '^  adding:'
 done
+
+section_end "nwjs_build"
 
 cd "$TARGET_DIR"
 
