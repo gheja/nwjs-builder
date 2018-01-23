@@ -19,7 +19,7 @@ config=`tempfile`
 
 echo "!define APP_NAME \"test-project\""
 echo "!define COMP_NAME \"Company Name\""
-echo "!define VERSION \"0.1.0\""
+echo "!define VERSION \"01.02.03.04\""
 echo "!define COPYRIGHT \"Copyright Info\""
 echo "!define DESCRIPTION \"NWJS builder test project\""
 echo "!define INSTALLER_NAME \"..\\${dir}-installer-user.exe\""
