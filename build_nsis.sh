@@ -62,14 +62,14 @@ if [ "$mode" == "admin" ]; then
 	echo "!define INSTALLER_NAME \"..\\${dir}-installer.exe\""
 	echo "RequestExecutionLevel admin"
 	if [ "$x64" == "yes" ]; then
-		echo "InstallDir \"\$PROGRAMFILES64\applicationname\""
+		echo "InstallDir \"\$PROGRAMFILES64\\\$APP_NAME\""
 	else
-		echo "InstallDir \"\$PROGRAMFILES\applicationname\""
+		echo "InstallDir \"\$PROGRAMFILES\\\$APP_NAME\""
 	fi
 else
 	echo "!define INSTALLER_NAME \"..\\${dir}-installer-user.exe\""
 	echo "RequestExecutionLevel user"
-	echo "InstallDir \"\$APPDATA\applicationname\""
+	echo "InstallDir \"\$APPDATA\\\$APP_NAME\""
 fi
 
 
