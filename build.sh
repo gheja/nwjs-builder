@@ -135,7 +135,7 @@ for i in *; do
 	fi
 	
 	# node is not needed in final ZIPs
-	rm -r "$i/node-*"
+	rm -r "$i"/node-*
 	
 	zip -r9 "$TARGET_DIR/$i.zip" "$i" | grep -vE '^  adding:'
 done
