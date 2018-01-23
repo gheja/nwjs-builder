@@ -142,6 +142,19 @@ done
 
 section_end "nwjs_build"
 
+cd "$ROOT_DIR/build/dist"
+
+for i in *-win-*; do
+	if [ ! -d "$i" ]; then
+		continue
+	fi
+	echo "$i"
+	
+	$ROOT_DIR/build_nsis.sh $i
+	
+	mv *.exe "$TARGET_DIR/"
+done
+
 cd "$TARGET_DIR"
 
 ls -alh
