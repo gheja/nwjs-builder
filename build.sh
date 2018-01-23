@@ -121,9 +121,12 @@ if [ $result != 0 ]; then
 	exit 1
 fi
 
+section_end "nwjs_build"
+
 # create the zip pacckages
 cd dist
 
+section_start "zip_build" "Creating ZIPs..."
 for i in *; do
 	if [ ! -d "$i" ]; then
 		continue
@@ -140,7 +143,7 @@ for i in *; do
 	zip -r9 "$TARGET_DIR/$i.zip" "$i" | grep -vE '^  adding:'
 done
 
-section_end "nwjs_build"
+section_end "zip_build"
 
 cd "$ROOT_DIR/build/dist"
 
@@ -150,8 +153,13 @@ for i in *-win-*; do
 	fi
 	echo "$i"
 	
+	section_start "nsis_build:$i:admin" "Building $i admin installer..."
 	$ROOT_DIR/build_nsis.sh "$i" admin
+	section_end "nsis_build:$i:admin"
+	
+	section_start "nsis_build:$i:user" "Building $i user installer..."
 	$ROOT_DIR/build_nsis.sh "$i" user
+	section_end "nsis_build:$i:user"
 	
 	mv *.exe "$TARGET_DIR/"
 done
