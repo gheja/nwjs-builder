@@ -150,7 +150,8 @@ for i in *-win-*; do
 	fi
 	echo "$i"
 	
-	$ROOT_DIR/build_nsis.sh $i
+	$ROOT_DIR/build_nsis.sh "$i" admin
+	$ROOT_DIR/build_nsis.sh "$i" user
 	
 	mv *.exe "$TARGET_DIR/"
 done
