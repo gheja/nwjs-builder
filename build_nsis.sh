@@ -1,10 +1,36 @@
 #!/bin/bash
 
-dir="$1"
-
-if [ "$dir" == "" ]; then
-	echo "$0 <dir>"
+_usage_and_exit()
+{
+	echo "$0 <dir> [user|admin]"
 	exit 1
+}
+
+if [ $# -lt 1 ] && [ $# -gt 2 ]; then
+	_usage_and_exit
+fi
+
+echo "$1" | grep -Eq '.'
+if [ $? != 0 ]; then
+	_usage_and_exit
+fi
+
+echo "$2" | grep -Eq '^(|user|admin)$'
+if [ $? != 0 ]; then
+	_usage_and_exit
+fi
+
+dir="$1"
+mode="$2"
+
+if [ ! -d "$dir" ]; then
+	echo "ERROR: directory does not exist, exiting."
+	exit 1
+fi
+
+# set "admin" as the default mode
+if [ "$mode" == "" ]; then
+	mode="admin"
 fi
 
 cd "$dir"
@@ -13,7 +39,14 @@ cd "$dir"
 latest_exe=`ls -t *.exe | head -n 1`
 
 config=`tempfile`
-user="yes"
+
+# detect if main executable is for x64 processors
+file "$latest_exe" | grep -q x86-64
+if [ $? == 0 ]; then
+	x64="yes"
+else
+	x64="no"
+fi
 
 {
 ### part 1 a: dynamic header
@@ -25,14 +58,18 @@ echo "!define COPYRIGHT \"Copyright Info\""
 echo "!define DESCRIPTION \"NWJS builder test project\""
 echo "!define MAIN_APP_EXE \"${latest_exe}\""
 
-if [ "$user" == "yes" ]; then
+if [ "$mode" == "admin" ]; then
+	echo "!define INSTALLER_NAME \"..\\${dir}-installer.exe\""
+	echo "RequestExecutionLevel admin"
+	if [ "$x64" == "yes" ]; then
+		echo "InstallDir \"\$PROGRAMFILES64\applicationname\""
+	else
+		echo "InstallDir \"\$PROGRAMFILES\applicationname\""
+	fi
+else
 	echo "!define INSTALLER_NAME \"..\\${dir}-installer-user.exe\""
 	echo "RequestExecutionLevel user"
 	echo "InstallDir \"\$APPDATA\applicationname\""
-else
-	echo "!define INSTALLER_NAME \"..\\${dir}-installer.exe\""
-	echo "RequestExecutionLevel admin"
-	echo "InstallDir \"\$PROGRAMFILES\applicationname\""
 fi
 
 
