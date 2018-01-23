@@ -13,6 +13,7 @@ cd "$dir"
 latest_exe=`ls -t *.exe | head -n 1`
 
 config=`tempfile`
+user="yes"
 
 {
 ### part 1 a: dynamic header
@@ -22,8 +23,18 @@ echo "!define COMP_NAME \"Company Name\""
 echo "!define VERSION \"01.02.03.04\""
 echo "!define COPYRIGHT \"Copyright Info\""
 echo "!define DESCRIPTION \"NWJS builder test project\""
-echo "!define INSTALLER_NAME \"..\\${dir}-installer-user.exe\""
 echo "!define MAIN_APP_EXE \"${latest_exe}\""
+
+if [ "$user" == "yes" ]; then
+	echo "!define INSTALLER_NAME \"..\\${dir}-installer-user.exe\""
+	echo "RequestExecutionLevel user"
+	echo "InstallDir \"\$APPDATA\applicationname\""
+else
+	echo "!define INSTALLER_NAME \"..\\${dir}-installer.exe\""
+	echo "RequestExecutionLevel admin"
+	echo "InstallDir \"\$PROGRAMFILES\applicationname\""
+fi
+
 
 ### part 1 b: static header
 cat <<'EOF'
@@ -34,8 +45,6 @@ cat <<'EOF'
 !define WEB_SITE "https://github.com/gheja/nwjs-builder"
 
 !define REG_START_MENU "Start Menu Folder"
-
-RequestExecutionLevel user
 
 var SM_Folder
 
@@ -56,7 +65,6 @@ BrandingText "${APP_NAME}"
 XPStyle on
 InstallDirRegKey "${REG_ROOT}" "${REG_APP_PATH}" ""
 # InstallDir "$PROGRAMFILES\applicationname"
-InstallDir "$APPDATA\applicationname"
 
 
 !include "MUI.nsh"
