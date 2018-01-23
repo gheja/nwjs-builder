@@ -3,5 +3,6 @@ addons:
     packages:
     - wine
     - zip
+    - nsis
 script:
   - ./build.sh src dist test-project 0.1.0
