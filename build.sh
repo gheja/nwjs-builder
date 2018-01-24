@@ -151,7 +151,6 @@ for i in *-win-*; do
 	if [ ! -d "$i" ]; then
 		continue
 	fi
-	echo "$i"
 	
 	section_start "nsis_build:$i:admin" "Building $i admin installer..."
 	$ROOT_DIR/build_nsis.sh "$i" admin
