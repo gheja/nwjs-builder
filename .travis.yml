@@ -5,4 +5,4 @@ addons:
     - zip
     - nsis
 script:
-  - ./build.sh src dist test-project 0.1.0
+  - ./precheck.sh && ./build.sh src dist test-project 0.1.0
